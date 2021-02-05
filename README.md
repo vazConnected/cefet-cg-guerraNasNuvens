@@ -4,7 +4,7 @@ O "TP1 Galaxian" é um projeto desenvolvido como parte da disciplina Computaçã
 ## Sobre
 
 ## Créditos
-- Luísa Oliveira;
-- Pedro Vaz;
-- Stéphanie Fonseca.
+- [Luísa Oliveira](https://github.com/luisaoliveira);
+- [Pedro Vaz](https://github.com/vazConnected);
+- [Stéphanie Fonseca](https://github.com/steponnie).
 
