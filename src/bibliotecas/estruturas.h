@@ -1,0 +1,29 @@
+#ifndef _ESTRUTURAS_H_
+#define _ESTRUTURAS_H_
+
+typedef struct{
+    GLint x;
+    GLint y;
+    GLint z;
+} Posicao;
+
+typedef struct{
+    GLint altura;
+    GLint largura;
+} Dimensoes;
+
+typedef struct{
+    unsigned short pontosDeVida;
+    unsigned short pontosDeAtaque;
+    Posicao posicao;
+    Dimensoes dimensoes;
+} Jogador;
+
+typedef struct{
+    unsigned int pontosDeVida;
+    unsigned int velocidade;
+    Posicao posicao;
+    Dimensoes dimensoes;
+} Inimigo;
+
+#endif // _ESTRUTURAS_H_
