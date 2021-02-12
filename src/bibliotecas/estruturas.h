@@ -13,15 +13,15 @@ typedef struct{
 } Dimensoes;
 
 typedef struct{
-    unsigned short pontosDeVida;
-    unsigned short pontosDeAtaque;
+    unsigned int pontosDeVida;
+    unsigned int pontosDeAtaque;
     Posicao posicao;
     Dimensoes dimensoes;
 } Jogador;
 
 typedef struct{
     unsigned int pontosDeVida;
-    unsigned int velocidade;
+    float velocidade;
     Posicao posicao;
     Dimensoes dimensoes;
 } Inimigo;
