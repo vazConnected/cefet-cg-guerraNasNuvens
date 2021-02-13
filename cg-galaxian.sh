@@ -10,7 +10,7 @@ clear
 echo -e "\nCaro, $(whoami)O processo de compilacao foi inciado.\n"
 
 echo -e "Compilando src/main.c"
-gcc -c -o src/cg-galaxian.o src/main.c
+gcc -c -o src/cg-galaxian.o src/main.c -lGL -lglut -lGLEW
 if [ $? -ne 0 ]; then
     excluirArquivosDesnecessarios
     exit 1
