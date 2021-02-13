@@ -10,6 +10,7 @@ typedef struct{
 typedef struct{
     GLint altura;
     GLint largura;
+    GLint profundidade;
 } Dimensoes;
 
 typedef struct{
