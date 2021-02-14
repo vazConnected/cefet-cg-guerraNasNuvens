@@ -1,5 +1,5 @@
-# CG - Galaxian
-O "CG - Galaxian" é um projeto desenvolvido como parte da disciplina Computação Gráfica, do [Cefet-MG](https://cefetmg.br), inspirado no jogo Galaxian (1979).
+# Guerra nas Nuvens
+O Guerra nas Nuvens é um projeto desenvolvido como parte da disciplina Computação Gráfica, do [Cefet-MG](https://cefetmg.br), inspirado no jogo Galaxian (1979).
 
 ## Preparando o Ambiente de Execução
 Para compilar e executar o projeto é necessário instalar os seguintes recursos:
