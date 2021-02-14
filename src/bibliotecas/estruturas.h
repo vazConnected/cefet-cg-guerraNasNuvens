@@ -1,7 +1,9 @@
 #ifndef _ESTRUTURAS_H_
 #define _ESTRUTURAS_H_
 
-typedef struct{
+enum telas {inicio = 1, jogo, fimDeJogo} telaAtual;
+
+typedef struct{ // Topo superior esquerdo
     GLint x;
     GLint y;
     GLint z;
@@ -25,6 +27,7 @@ typedef struct{
     float velocidade;
     Posicao posicao;
     Dimensoes dimensoes;
+    Inimigo* proximoInimigo; // Para a lista encadeada de inimigos
 } Inimigo;
 
 #endif // _ESTRUTURAS_H_

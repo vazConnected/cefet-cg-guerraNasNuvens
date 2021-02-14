@@ -25,7 +25,9 @@ bool teclaComumApertada[256]; // Tabela ASCII
 bool teclaEspecialApertada[21]; // https://www.opengl.org/resources/libraries/glut/spec3/node54.html
 
 Jogador jogador;
-Inimigo *inimigos;
+
+Inimigo *inicioListaInimigos = NULL;
+Inimigo *fimListaInimigos = NULL;
 
 void inicializa(){
     glClearColor(0.0, 0.0, 0.0, 1);
@@ -37,6 +39,8 @@ void inicializa(){
     dimensoesDoJogo.altura = 400;
     dimensoesDoJogo.largura = 300;
     dimensoesDoJogo.profundidade = 10;
+
+    telaAtual = inicio;
 
     // Mapear spritesheet
     // Carregar texturas
