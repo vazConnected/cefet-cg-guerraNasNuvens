@@ -26,8 +26,6 @@ bool teclaEspecialApertada[21]; // https://www.opengl.org/resources/libraries/gl
 
 Jogador jogador;
 
-Inimigo *inicioListaInimigos = NULL;
-
 void inicializa(){
     glClearColor(0.0, 0.0, 0.0, 1);
 
