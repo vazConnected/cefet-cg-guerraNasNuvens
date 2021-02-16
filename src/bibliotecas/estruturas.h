@@ -22,12 +22,14 @@ typedef struct{
     Dimensoes dimensoes;
 } Jogador;
 
-typedef struct{
+typedef struct inimigo Inimigo;
+
+struct inimigo{
     unsigned int pontosDeVida;
     float velocidade;
     Posicao posicao;
     Dimensoes dimensoes;
     Inimigo* proximoInimigo; // Para a lista encadeada de inimigos
-} Inimigo;
+};
 
 #endif // _ESTRUTURAS_H_

@@ -15,9 +15,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <math.h>
 
 #include "bibliotecas/estruturas.h"
+#include "bibliotecas/telas.h"
 
 Dimensoes dimensoesDoJogo;
 
@@ -27,7 +27,6 @@ bool teclaEspecialApertada[21]; // https://www.opengl.org/resources/libraries/gl
 Jogador jogador;
 
 Inimigo *inicioListaInimigos = NULL;
-Inimigo *fimListaInimigos = NULL;
 
 void inicializa(){
     glClearColor(0.0, 0.0, 0.0, 1);
@@ -53,14 +52,18 @@ void inicializa(){
 void callback_desenhaCena(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glColor3f(0.4, 0.7647, 0.996); // RGB: 102 195 154
-    glBegin(GL_TRIANGLE_FAN);
-        glVertex3f(  0,   0, 0);
-        glVertex3f(300,   0, 0);
-        glVertex3f(300, 400, 0);
-        glVertex3f(  0, 400, 0);
-    glEnd();
-
+    switch(telaAtual){
+        case(inicio):
+            inicio_desenhaCena();
+        break;
+        case(jogo):
+            jogo_desenhaCena();
+        break;
+        case(fimDeJogo):
+            fimDeJogo_desenhaCena();
+        break;
+    }
+    
     glFlush();
 }
 
@@ -180,7 +183,7 @@ int main(int argc, char** argv){
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(300, 400);
     glutInitWindowPosition(0, 0);
-    glutCreateWindow("CG - Galaxian - TP1");
+    glutCreateWindow("Guerra nas Nuvens");
 
     // Registro de callbacks
     glutDisplayFunc(callback_desenhaCena);
