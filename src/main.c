@@ -19,8 +19,6 @@
 #include "bibliotecas/estruturas.h"
 #include "bibliotecas/telas.h"
 
-Dimensoes dimensoesDoJogo;
-
 bool teclaComumApertada[256]; // Tabela ASCII
 bool teclaEspecialApertada[21]; // https://www.opengl.org/resources/libraries/glut/spec3/node54.html
 
@@ -30,12 +28,8 @@ void inicializa(){
     glClearColor(0.0, 0.0, 0.0, 1);
 
     glEnable(GL_DEPTH_TEST); // Habilita profundidade (z)
-    glEnable(GL_TEXTURE_2D); // Habilita texturas
+    //glEnable(GL_TEXTURE_2D); // Habilita texturas
     glEnable(GL_BLEND ); // Habilita transparencia
-
-    dimensoesDoJogo.altura = 400;
-    dimensoesDoJogo.largura = 300;
-    dimensoesDoJogo.profundidade = 10;
 
     telaAtual = inicio;
 
@@ -69,15 +63,15 @@ void callback_redimensiona(int largura, int altura){
    /*
     * Descricao da tela:
     *   - Razao de proporcao: 3:4
-    *   - Area util: (0, 0, 0) a (300, 400, 10)
+    *   - Area util: (0, 0, -10) a (300, 400, 10)
     */
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0, dimensoesDoJogo.largura, 0, dimensoesDoJogo.altura, 0, dimensoesDoJogo.profundidade);
+    glOrtho(0, 300, 0, 400, -10, 10); // left, right, bottom, top, zNear, zFar)
 
     GLfloat razaoAspectoDaJanela = ((GLfloat)largura)/altura;
-    GLfloat razaoAspectoDoJogo = ((GLfloat) dimensoesDoJogo.largura) / dimensoesDoJogo.altura;
+    GLfloat razaoAspectoDoJogo = 300.0 / 400.0; // larguraDoJogo / alturaDoJogo
 
     if(razaoAspectoDaJanela == razaoAspectoDoJogo){ // Janela na proporcao adequada
         glViewport(0, 0, largura, altura);
