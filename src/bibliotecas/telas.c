@@ -6,9 +6,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "telas.h"
+#include "include/estruturas.h"
 
-#define MARGEM_DA_TELA 10
+#include "include/telas.h"
+
+
+const int MARGEM_DA_TELA = 10;
 
 void inicio_desenhaCena(){
     glColor3f(0.4, 0.7647, 0.996); // RGB: 102 195 154

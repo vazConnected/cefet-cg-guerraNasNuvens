@@ -16,8 +16,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "bibliotecas/estruturas.h"
-#include "bibliotecas/telas.h"
+#include "bibliotecas/include/estruturas.h"
+#include "bibliotecas/include/telas.h"
 
 bool teclaComumApertada[256]; // Tabela ASCII
 bool teclaEspecialApertada[21]; // https://www.opengl.org/resources/libraries/glut/spec3/node54.html

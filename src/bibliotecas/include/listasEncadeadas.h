@@ -1,5 +1,5 @@
-#ifndef _LISTAS_ENCADESDAS_H
-#define _LISTAS_ENCADEADAS_H
+#ifndef _LISTAS_ENCADESDAS_H_
+#define _LISTAS_ENCADEADAS_H_
 
 #include "estruturas.h"
 
@@ -15,4 +15,4 @@ bool projeteisJogador_listaVazia();
 void projeteisJogador_adicionar(Projetil *projetil);
 void projeteisJogador_remover(unsigned int indice);
 
-#endif // _LISTAS_ENCADEADAS_H
+#endif // _LISTAS_ENCADEADAS_H_
