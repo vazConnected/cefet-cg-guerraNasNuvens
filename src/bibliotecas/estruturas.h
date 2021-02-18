@@ -3,7 +3,7 @@
 
 #include <GL/freeglut.h>
 
-enum telas {inicio = 1, jogo, fimDeJogo} telaAtual;
+enum telas {inicio = 1, jogo, fimDeJogo};
 
 typedef struct{ // Topo superior esquerdo
     GLint x;

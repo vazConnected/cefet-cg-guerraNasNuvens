@@ -18,11 +18,15 @@
 
 #include "bibliotecas/estruturas.h"
 #include "bibliotecas/telas.h"
+#include "bibliotecas/fisicas.h"
 
 bool teclaComumApertada[256]; // Tabela ASCII
 bool teclaEspecialApertada[21]; // https://www.opengl.org/resources/libraries/glut/spec3/node54.html
 
 Jogador jogador;
+
+enum telas telaAtual = jogo;
+bool jogoPasado = false;
 
 void inicializa(){
     glClearColor(0.0, 0.0, 0.0, 1);
@@ -31,12 +35,16 @@ void inicializa(){
     //glEnable(GL_TEXTURE_2D); // Habilita texturas
     glEnable(GL_BLEND ); // Habilita transparencia
 
-    telaAtual = inicio;
-
     // Mapear spritesheet
     // Carregar texturas
 
-    // Definir jogador
+    // Define jogador (valores nao definivos)
+    jogador.dimensoes.largura = 30;
+    jogador.dimensoes.altura = 30;
+    jogador.posicao.x = 150 - jogador.dimensoes.largura / 2;
+    jogador.posicao.y = 40;
+    jogador.posicao.z = 1;
+    
     // Definir inimigo
 
 }
@@ -49,7 +57,7 @@ void callback_desenhaCena(){
             inicio_desenhaCena();
         break;
         case(jogo):
-            jogo_desenhaCena();
+            jogo_desenhaCena(&jogador, teclaEspecialApertada, teclaComumApertada);
         break;
         case(fimDeJogo):
             fimDeJogo_desenhaCena();
@@ -165,6 +173,10 @@ void callback_teclaEspecialAbaixada(int tecla, int x, int y){
 }
 
 void callback_atualizaQuadros(int periodo){
+    if(telaAtual == jogo && !jogoPasado){
+        atualizarPosicaoJogador(&jogador, teclaEspecialApertada, MARGEM_DA_TELA);
+    }
+    
     glutPostRedisplay();
     glutTimerFunc(periodo, callback_atualizaQuadros, periodo);
 }
@@ -187,7 +199,7 @@ int main(int argc, char** argv){
 
     glutIgnoreKeyRepeat(GLUT_KEY_REPEAT_ON);
 
-    glutTimerFunc(0, callback_atualizaQuadros, 33);
+    glutTimerFunc(0, callback_atualizaQuadros, 30);
 
     inicializa();
 
