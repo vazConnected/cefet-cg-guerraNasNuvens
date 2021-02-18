@@ -1,9 +1,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "include/estruturas.h"
+#include "estruturas.h"
 
-#include "include/listasEncadeadas.h"
+#include "listasEncadeadas.h"
 
 Inimigo *inicioListaInimigos = NULL;
 Inimigo *fimListaInimigos = NULL;
