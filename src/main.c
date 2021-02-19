@@ -10,7 +10,6 @@
 
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include <SOIL/SOIL.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,6 +17,7 @@
 
 #include "bibliotecas/estruturas.h"
 #include "bibliotecas/telas.h"
+#include "bibliotecas/listasEncadeadas.h"
 #include "bibliotecas/fisicas.h"
 
 bool teclaComumApertada[256]; // Tabela ASCII
@@ -25,8 +25,8 @@ bool teclaEspecialApertada[21]; // https://www.opengl.org/resources/libraries/gl
 
 Jogador jogador;
 
-enum telas telaAtual = jogo;
-bool jogoPasado = false;
+enum telas telaAtual = inicio;
+bool jogoPausado = false;
 
 void inicializa(){
     glClearColor(0.0, 0.0, 0.0, 1);
@@ -38,12 +38,14 @@ void inicializa(){
     // Mapear spritesheet
     // Carregar texturas
 
+    inicializarListasEncadeadas();
+
     // Define jogador (valores nao definivos)
     jogador.dimensoes.largura = 30;
     jogador.dimensoes.altura = 30;
     jogador.posicao.x = 150 - jogador.dimensoes.largura / 2;
     jogador.posicao.y = 40;
-    jogador.posicao.z = 1;
+    jogador.posicao.z = 5;
     
     // Definir inimigo
 
@@ -57,7 +59,7 @@ void callback_desenhaCena(){
             inicio_desenhaCena();
         break;
         case(jogo):
-            jogo_desenhaCena(&jogador, teclaEspecialApertada, teclaComumApertada);
+            jogo_desenhaCena(jogador, projeteisDosInimigos_inicioDaLista(), projeteisDoJogador_inicioDaLista());
         break;
         case(fimDeJogo):
             fimDeJogo_desenhaCena();
@@ -99,6 +101,23 @@ void callback_redimensiona(int largura, int altura){
 
 void callback_teclaAbaixada(unsigned char tecla, int x, int y){
     teclaComumApertada[tecla] = true;
+
+    if(telaAtual == inicio){
+        if(tecla == 'p' || tecla == 'P'){
+            telaAtual = jogo;
+        }
+    }else if(telaAtual == jogo){
+        if(tecla == ' '){
+            Projetil projetil;
+            projetil.dimensoes.altura = 10;
+            projetil.dimensoes.largura = 5;
+            projetil.posicao.x = jogador.posicao.x + jogador.dimensoes.largura / 2;
+            projetil.posicao.y = jogador.posicao.y;
+            projetil.posicao.z = 4;
+
+            projeteisDoJogador_adicionar(projetil);
+        }
+    }
 }
     
 void callback_teclaLevantada(unsigned char tecla, int x, int y){
@@ -173,8 +192,10 @@ void callback_teclaEspecialAbaixada(int tecla, int x, int y){
 }
 
 void callback_atualizaQuadros(int periodo){
-    if(telaAtual == jogo && !jogoPasado){
+    if(telaAtual == jogo && !jogoPausado){
         atualizarPosicaoJogador(&jogador, teclaEspecialApertada, MARGEM_DA_TELA);
+        atualizarProjeteisInimigo(projeteisDosInimigos_inicioDaLista(), projeteisDosInimigos_listaVazia, projeteisDosInimigos_remover);
+        atualizarProjeteisJogador(projeteisDoJogador_inicioDaLista(), projeteisDoJogador_listaVazia, projeteisDoJogador_remover);
     }
     
     glutPostRedisplay();

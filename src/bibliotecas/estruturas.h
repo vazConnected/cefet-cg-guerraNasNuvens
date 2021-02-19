@@ -17,13 +17,6 @@ typedef struct{
     GLint profundidade;
 } Dimensoes;
 
-typedef struct projetil Projetil;
-struct projetil{
-    Posicao posicao;
-    Dimensoes dimensoes;
-    Projetil* proximoProjetil;
-};
-
 typedef struct{
     unsigned int pontosDeVida;
     unsigned int pontosDeAtaque;
@@ -31,13 +24,18 @@ typedef struct{
     Dimensoes dimensoes;
 } Jogador;
 
-typedef struct inimigo Inimigo;
-struct inimigo{
+typedef struct projetil{
+    Posicao posicao;
+    Dimensoes dimensoes;
+    struct projetil* proximoProjetil;
+} Projetil;
+
+typedef struct inimigo{
     unsigned int pontosDeVida;
     float velocidade;
     Posicao posicao;
     Dimensoes dimensoes;
-    Inimigo* proximoInimigo; // Para a lista encadeada de inimigos
-};
+    struct inimigo* proximoInimigo;
+} Inimigo;
 
 #endif // _ESTRUTURAS_H_

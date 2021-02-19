@@ -4,7 +4,7 @@
 #define MARGEM_DA_TELA 10
 
 void inicio_desenhaCena();
-void jogo_desenhaCena(Jogador* jogador, bool* teclaEspecialApertada, bool* teclaComumApertada);
+void jogo_desenhaCena(Jogador jogador, Projetil* listaProjeteisInimigos, Projetil* listaProjeteisJogador);
 void fimDeJogo_desenhaCena();
 
 #endif // _TELAS_H_

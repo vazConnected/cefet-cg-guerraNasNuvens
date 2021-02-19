@@ -32,15 +32,14 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-
 echo -e "\n\tCompilando src/main.c"
-gcc -o src/cg-galaxian.out src/main.c src/bibliotecas/telas.o src/bibliotecas/fisicas.o -lGL -lglut -lGLEW
+gcc -o src/cg-galaxian.out src/main.c src/bibliotecas/telas.o src/bibliotecas/fisicas.o src/bibliotecas/listasEncadeadas.o -lGL -lglut -lGLEW
 if [ $? -ne 0 ]; then
     excluirArquivosDesnecessarios
     exit 1
 fi
 
-echo -e "\nCompilacao Finalizada!"
+echo -e "\nCompilacao finalizada!"
 excluirArquivosDesnecessarios
 
 echo -e "\nIniciando jogo..."
