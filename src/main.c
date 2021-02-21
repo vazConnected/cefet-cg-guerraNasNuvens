@@ -107,11 +107,13 @@ void callback_teclaAbaixada(unsigned char tecla, int x, int y){
             telaAtual = jogo;
         }
     }else if(telaAtual == jogo){
-        if(tecla == ' '){
+        if(tecla == 'p' || tecla == 'P'){
+            jogoPausado = !jogoPausado;
+        }else if(tecla == ' '){
             Projetil projetil;
             projetil.dimensoes.altura = 10;
-            projetil.dimensoes.largura = 5;
-            projetil.posicao.x = jogador.posicao.x + jogador.dimensoes.largura / 2;
+            projetil.dimensoes.largura = 6;
+            projetil.posicao.x = jogador.posicao.x + jogador.dimensoes.largura / 2 - projetil.dimensoes.largura / 2;
             projetil.posicao.y = jogador.posicao.y;
             projetil.posicao.z = 4;
 

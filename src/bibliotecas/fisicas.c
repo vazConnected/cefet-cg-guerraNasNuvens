@@ -28,19 +28,20 @@ void atualizarPosicaoJogador(Jogador* jogador, bool* teclaEspecialApertada, int 
     }
 }
 
-void atualizarProjeteisInimigo(Projetil* inicioListaProjeteisInimigo, bool(*listaVazia)(void), void(*remover)(unsigned int) ){
+void atualizarProjeteisInimigo(Projetil* inicioListaProjeteisInimigos, bool(*listaVazia)(void), void(*remover)(unsigned int) ){
     if(!listaVazia()){
-        Projetil* projetilAtual = inicioListaProjeteisInimigo;
-        unsigned int indiceListaInimigo = 0;
+        Projetil* projetilAtual = inicioListaProjeteisInimigos;
+        unsigned int indiceListaProjeteisInimigos = 0;
 
         while(projetilAtual != NULL){
             if( projetilAtual->posicao.y - projetilAtual->dimensoes.altura > 0 ){
                 projetilAtual->posicao.y -= VALOR_MOVIMENTACAO_PROJETEIS;
                 if( projetilAtual->posicao.y < 0 ){
-                    remover(indiceListaInimigo);
+                    remover(indiceListaProjeteisInimigos);
                 }
             }
             projetilAtual = projetilAtual->proximoProjetil;
+            indiceListaProjeteisInimigos++;
         }
     }
 }
@@ -48,16 +49,15 @@ void atualizarProjeteisInimigo(Projetil* inicioListaProjeteisInimigo, bool(*list
 void atualizarProjeteisJogador(Projetil* inicioListaProjeteisJogador, bool(*listaVazia)(void), void(*remover)(unsigned int) ){
     if(!listaVazia()){
         Projetil* projetilAtual = inicioListaProjeteisJogador;
-        unsigned int indiceListaInimigo = 0;
+        unsigned int indiceListaProjeteisJogador = 0;
 
         while(projetilAtual != NULL){
-            if( projetilAtual->posicao.y - projetilAtual->dimensoes.altura < 400 ){
-                projetilAtual->posicao.y += VALOR_MOVIMENTACAO_PROJETEIS;
-                if( projetilAtual->posicao.y - projetilAtual->dimensoes.altura > 400 ){
-                    remover(indiceListaInimigo);
-                }
+            projetilAtual->posicao.y += VALOR_MOVIMENTACAO_PROJETEIS;
+            if( projetilAtual->posicao.y - projetilAtual->dimensoes.altura > 400 ){
+                remover(indiceListaProjeteisJogador);
             }
             projetilAtual = projetilAtual->proximoProjetil;
+            indiceListaProjeteisJogador++;
         }
     }
 }

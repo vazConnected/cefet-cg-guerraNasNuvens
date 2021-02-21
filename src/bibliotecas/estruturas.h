@@ -5,6 +5,8 @@
 
 enum telas {inicio = 1, jogo, fimDeJogo};
 
+unsigned int pontuacao;
+
 typedef struct{ // Topo superior esquerdo
     GLint x;
     GLint y;

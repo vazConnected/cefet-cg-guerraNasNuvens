@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
+//#include <stdio.h> // Debug
 
 #include "estruturas.h"
 
@@ -63,6 +64,8 @@ void inimigos_adicionar(Inimigo inimigo){
     listaDeInimigos.ultimoInimigo->posicao.x = inimigo.posicao.x;
     listaDeInimigos.ultimoInimigo->posicao.y = inimigo.posicao.y;
     listaDeInimigos.ultimoInimigo->posicao.z = inimigo.posicao.z;
+    listaDeInimigos.ultimoInimigo->velocidade = inimigo.velocidade;
+    listaDeInimigos.ultimoInimigo->pontosDeVida = inimigo.pontosDeVida;
 
     listaDeInimigos.ultimoInimigo->proximoInimigo = NULL;
 
@@ -70,17 +73,41 @@ void inimigos_adicionar(Inimigo inimigo){
 }
 
 void inimigos_remover(unsigned int indice){
-    if( !inimigos_listaVazia() ){
-        if(listaDeInimigos.tamanhoDaLista > 1){
-            unsigned int indiceAtual = 0;
+    if(!inimigos_listaVazia() && indice < listaDeInimigos.tamanhoDaLista){
+        // Remove o unico inimigo da lista
+        if(indice == 0 && listaDeInimigos.tamanhoDaLista == 1){
+            free(listaDeInimigos.primeiroInimigo);
+            listaDeInimigos.primeiroInimigo = NULL;
+            listaDeInimigos.ultimoInimigo = NULL;
+            listaDeInimigos.tamanhoDaLista = 0;
+            return;
+        }
+
+        // Remove o primeiro inimigo de uma lista com tamanho > 1
+        if(indice == 0 && listaDeInimigos.tamanhoDaLista > 1){
+            Inimigo* novoPrimeiro = listaDeInimigos.primeiroInimigo->proximoInimigo;
+            free(listaDeInimigos.primeiroInimigo);
+            listaDeInimigos.primeiroInimigo = novoPrimeiro;
+            listaDeInimigos.tamanhoDaLista--;
+            return;
+        }
+
+        // Remove um inimigo no meio da lista
+        if(indice > 0 && listaDeInimigos.tamanhoDaLista > 1){
+            unsigned int indiceDoInimigoAtual = 0;
             Inimigo* inimigoAtual = listaDeInimigos.primeiroInimigo;
-            while(inimigoAtual != NULL){
-                if(indiceAtual == indice - 1){
+            while(indiceDoInimigoAtual < listaDeInimigos.tamanhoDaLista && inimigoAtual != NULL){
+                if(indiceDoInimigoAtual == indice - 1){
+                    if(inimigoAtual->proximoInimigo == listaDeInimigos.ultimoInimigo){
+                        listaDeInimigos.ultimoInimigo = inimigoAtual->proximoInimigo->proximoInimigo;
+                    }
                     Inimigo* inimigoEliminado = inimigoAtual->proximoInimigo;
-                    Inimigo* inimigoSeguinte = inimigoEliminado->proximoInimigo;
-                    inimigoAtual->proximoInimigo = inimigoSeguinte;
+                    inimigoAtual->proximoInimigo = inimigoAtual->proximoInimigo->proximoInimigo;
                     free(inimigoEliminado);
+                    listaDeInimigos.tamanhoDaLista--;
+                    return;
                 }
+                indiceDoInimigoAtual++;
                 inimigoAtual = inimigoAtual->proximoInimigo;
             }
         }
@@ -120,17 +147,41 @@ void projeteisDosInimigos_adicionar(Projetil projetil){
 }
 
 void projeteisDosInimigos_remover(unsigned int indice){
-    if( !projeteisDosInimigos_listaVazia() ){
-        if(listaProjeteisDosInimigos.tamanhoDaLista > 1){
-            unsigned int indiceAtual = 0;
+    if(!projeteisDosInimigos_listaVazia() && indice < listaProjeteisDosInimigos.tamanhoDaLista){
+        // Remove o unico projetil da lista
+        if(indice == 0 && listaProjeteisDosInimigos.tamanhoDaLista == 1){
+            free(listaProjeteisDosInimigos.primeiroProjetil);
+            listaProjeteisDosInimigos.primeiroProjetil = NULL;
+            listaProjeteisDosInimigos.ultimoProjetil = NULL;
+            listaProjeteisDosInimigos.tamanhoDaLista = 0;
+            return;
+        }
+
+        // Remove o primeiro projetil de uma lista com tamanho > 1
+        if(indice == 0 && listaProjeteisDosInimigos.tamanhoDaLista > 1){
+            Projetil* novoPrimeiro = listaProjeteisDosInimigos.primeiroProjetil->proximoProjetil;
+            free(listaProjeteisDosInimigos.primeiroProjetil);
+            listaProjeteisDosInimigos.primeiroProjetil = novoPrimeiro;
+            listaProjeteisDosInimigos.tamanhoDaLista--;
+            return;
+        }
+
+        // Remove um projetil no meio da lista
+        if(indice > 0 && listaProjeteisDosInimigos.tamanhoDaLista > 1){
+            unsigned int indiceDoProjetilAtual = 0;
             Projetil* projetilAtual = listaProjeteisDosInimigos.primeiroProjetil;
-            while(projetilAtual != NULL){
-                if(indiceAtual == indice - 1){
+            while(indiceDoProjetilAtual < listaProjeteisDosInimigos.tamanhoDaLista && projetilAtual != NULL){
+                if(indiceDoProjetilAtual == indice - 1){
+                    if(projetilAtual->proximoProjetil == listaProjeteisDosInimigos.ultimoProjetil){
+                        listaProjeteisDosInimigos.ultimoProjetil = projetilAtual->proximoProjetil->proximoProjetil;
+                    }
                     Projetil* projetilEliminado = projetilAtual->proximoProjetil;
-                    Projetil* projetilSeguinte = projetilEliminado->proximoProjetil;
-                    projetilAtual->proximoProjetil = projetilSeguinte;
+                    projetilAtual->proximoProjetil = projetilAtual->proximoProjetil->proximoProjetil;
                     free(projetilEliminado);
+                    listaProjeteisDosInimigos.tamanhoDaLista--;
+                    return;
                 }
+                indiceDoProjetilAtual++;
                 projetilAtual = projetilAtual->proximoProjetil;
             }
         }
@@ -170,21 +221,47 @@ void projeteisDoJogador_adicionar(Projetil projetil){
 }
 
 void projeteisDoJogador_remover(unsigned int indice){
-    if( !projeteisDoJogador_listaVazia() ){
-        if(listaProjeteisDoJogador.tamanhoDaLista > 1){
-            unsigned int indiceAtual = 0;
+    if(!projeteisDoJogador_listaVazia() && indice < listaProjeteisDoJogador.tamanhoDaLista){
+        // Remove o unico projetil da lista
+        if(indice == 0 && listaProjeteisDoJogador.tamanhoDaLista == 1){
+            //printf("\nremove o unico elemento da lista\n"); //Debug
+            free(listaProjeteisDoJogador.primeiroProjetil);
+            listaProjeteisDoJogador.primeiroProjetil = NULL;
+            listaProjeteisDoJogador.ultimoProjetil = NULL;
+            listaProjeteisDoJogador.tamanhoDaLista = 0;
+            return;
+        }
+
+        // Remove o primeiro projetil de uma lista com tamanho > 1
+        if(indice == 0 && listaProjeteisDoJogador.tamanhoDaLista > 1){
+            //printf("\nremove o primeiro projetil da lista\n"); //Debug
+            Projetil* novoPrimeiro = listaProjeteisDoJogador.primeiroProjetil->proximoProjetil;
+            free(listaProjeteisDoJogador.primeiroProjetil);
+            listaProjeteisDoJogador.primeiroProjetil = novoPrimeiro;
+            listaProjeteisDoJogador.tamanhoDaLista--;
+            return;
+        }
+
+        // Remove um projetil no meio da lista
+        if(indice > 0 && listaProjeteisDoJogador.tamanhoDaLista > 1){
+            //printf("\nremove um projetil do meio da lista\n"); // Debug
+            unsigned int indiceDoProjetilAtual = 0;
             Projetil* projetilAtual = listaProjeteisDoJogador.primeiroProjetil;
-            while(projetilAtual != NULL){
-                if(indiceAtual == indice - 1){
+            while(indiceDoProjetilAtual < listaProjeteisDoJogador.tamanhoDaLista && projetilAtual != NULL){
+                if(indiceDoProjetilAtual == indice - 1){
+                    if(projetilAtual->proximoProjetil == listaProjeteisDoJogador.ultimoProjetil){
+                        listaProjeteisDoJogador.ultimoProjetil = projetilAtual->proximoProjetil->proximoProjetil;
+                    }
                     Projetil* projetilEliminado = projetilAtual->proximoProjetil;
-                    Projetil* projetilSeguinte = projetilEliminado->proximoProjetil;
-                    projetilAtual->proximoProjetil = projetilSeguinte;
+                    projetilAtual->proximoProjetil = projetilAtual->proximoProjetil->proximoProjetil;
                     free(projetilEliminado);
+                    listaProjeteisDoJogador.tamanhoDaLista--;
+                    return;
                 }
+                indiceDoProjetilAtual++;
                 projetilAtual = projetilAtual->proximoProjetil;
             }
         }
-        
     }
 }
 
