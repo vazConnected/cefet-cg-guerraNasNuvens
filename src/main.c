@@ -14,10 +14,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
-#include "bibliotecas/estruturas.h"
+#include "bibliotecas/comuns.h"
 #include "bibliotecas/telas.h"
-#include "bibliotecas/listasEncadeadas.h"
+#include "bibliotecas/listas.h"
 #include "bibliotecas/fisicas.h"
 
 bool teclaComumApertada[256]; // Tabela ASCII
@@ -29,6 +30,7 @@ enum telas telaAtual = inicio;
 bool jogoPausado = false;
 
 void inicializa(){
+    srand(time(NULL));
     glClearColor(0.0, 0.0, 0.0, 1);
 
     glEnable(GL_DEPTH_TEST); // Habilita profundidade (z)
@@ -38,14 +40,7 @@ void inicializa(){
     // Mapear spritesheet
     // Carregar texturas
 
-    inicializarListasEncadeadas();
-
-    // Define jogador (valores nao definivos)
-    jogador.dimensoes.largura = 30;
-    jogador.dimensoes.altura = 30;
-    jogador.posicao.x = 150 - jogador.dimensoes.largura / 2;
-    jogador.posicao.y = 40;
-    jogador.posicao.z = 5;
+    inicializarlistas();
     
     // Definir inimigo
 
@@ -59,7 +54,7 @@ void callback_desenhaCena(){
             inicio_desenhaCena();
         break;
         case(jogo):
-            jogo_desenhaCena(jogador, projeteisDosInimigos_inicioDaLista(), projeteisDoJogador_inicioDaLista());
+            jogo_desenhaCena(jogador, projeteisDoJogador_inicioDaLista());
         break;
         case(fimDeJogo):
             fimDeJogo_desenhaCena();
@@ -105,6 +100,7 @@ void callback_teclaAbaixada(unsigned char tecla, int x, int y){
     if(telaAtual == inicio){
         if(tecla == 'p' || tecla == 'P'){
             telaAtual = jogo;
+            jogo_reiniciarJogo(&jogador);
         }
     }else if(telaAtual == jogo){
         if(tecla == 'p' || tecla == 'P'){
@@ -196,8 +192,9 @@ void callback_teclaEspecialAbaixada(int tecla, int x, int y){
 void callback_atualizaQuadros(int periodo){
     if(telaAtual == jogo && !jogoPausado){
         atualizarPosicaoJogador(&jogador, teclaEspecialApertada, MARGEM_DA_TELA);
-        atualizarProjeteisInimigo(projeteisDosInimigos_inicioDaLista(), projeteisDosInimigos_listaVazia, projeteisDosInimigos_remover);
-        atualizarProjeteisJogador(projeteisDoJogador_inicioDaLista(), projeteisDoJogador_listaVazia, projeteisDoJogador_remover);
+        atualizarProjeteisJogador();
+        atualizarPosicaoDosInimigos();
+        atualizarProjeteisInimigos();
     }
     
     glutPostRedisplay();

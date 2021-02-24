@@ -1,10 +1,18 @@
 #ifndef _FISICAS_H_
 #define _FISICAS_H_
 
-#include "estruturas.h"
+#include <stdbool.h>
+
+#include "comuns.h"
+#include "listas.h"
 
 void atualizarPosicaoJogador(Jogador *jogador, bool* teclaEspecialApertada, int margemDaTela);
-void atualizarProjeteisInimigo(Projetil* inicioListaProjeteisInimigo, bool(*listaVazia)(void), void(*remover)(unsigned int) );
-void atualizarProjeteisJogador(Projetil* inicioListaProjeteisJogador, bool(*listaVazia)(void), void(*remover)(unsigned int) );
+void atualizarProjeteisJogador();
+
+void atualizarPosicaoDosInimigos();
+void atualizarProjeteisInimigos();
+/*
+bool inimigoAtingido(Inimigo inimigo);
+bool jogadorAtingido();*/
 
 #endif // _FISICAS_H_

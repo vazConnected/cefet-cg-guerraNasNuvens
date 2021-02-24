@@ -2,7 +2,7 @@ function excluirArquivosDesnecessarios {
     echo -e "\nExcluindo arquivos desnecessarios..."
 
     rm -f $(pwd)/src/bibliotecas/telas.o
-    rm -f $(pwd)/src/bibliotecas/listasEncadeadas.o
+    rm -f $(pwd)/src/bibliotecas/listas.o
     rm -f $(pwd)/src/bibliotecas/fisicas.o
 
     echo -e "Feito!"
@@ -18,8 +18,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo -e "\tCompilando src/bibliotecas/listasEncadeadas.c"
-gcc -c -o src/bibliotecas/listasEncadeadas.o src/bibliotecas/listasEncadeadas.c -lGL -lGLEW -lglut
+echo -e "\tCompilando src/bibliotecas/listas.c"
+gcc -c -o src/bibliotecas/listas.o src/bibliotecas/listas.c -lGL -lGLEW -lglut
 if [ $? -ne 0 ]; then
     excluirArquivosDesnecessarios
     exit 1
@@ -33,7 +33,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -e "\n\tCompilando src/main.c"
-gcc -o src/cg-galaxian.out src/main.c src/bibliotecas/telas.o src/bibliotecas/fisicas.o src/bibliotecas/listasEncadeadas.o -lGL -lglut -lGLEW
+gcc -o src/cg-galaxian.out src/main.c src/bibliotecas/telas.o src/bibliotecas/fisicas.o src/bibliotecas/listas.o -lGL -lglut -lGLEW
 if [ $? -ne 0 ]; then
     excluirArquivosDesnecessarios
     exit 1

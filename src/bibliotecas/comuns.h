@@ -1,11 +1,11 @@
-#ifndef _ESTRUTURAS_H_
-#define _ESTRUTURAS_H_
+#ifndef _COMUNS_H_
+#define _COMUNS_H_
+
+#include <stdbool.h>
 
 #include <GL/freeglut.h>
 
 enum telas {inicio = 1, jogo, fimDeJogo};
-
-unsigned int pontuacao;
 
 typedef struct{ // Topo superior esquerdo
     GLint x;
@@ -32,12 +32,17 @@ typedef struct projetil{
     struct projetil* proximoProjetil;
 } Projetil;
 
+typedef struct projetilInimigo{ 
+    bool valido;
+    Posicao posicao;
+    Dimensoes dimensoes;
+} ProjetilInimigo;
+
 typedef struct inimigo{
     unsigned int pontosDeVida;
     float velocidade;
     Posicao posicao;
     Dimensoes dimensoes;
-    struct inimigo* proximoInimigo;
 } Inimigo;
 
-#endif // _ESTRUTURAS_H_
+#endif // _COMUNS_H_
