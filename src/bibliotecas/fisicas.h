@@ -6,13 +6,13 @@
 #include "comuns.h"
 #include "listas.h"
 
-void atualizarPosicaoJogador(Jogador* jogador, bool* teclaEspecialApertada, int margemDaTela);
-void atualizarProjeteisJogador(Jogador* jogador);
+void atualizarPosicaoJogador(Jogador *jogador, bool* teclaEspecialApertada, int margemDaTela);
+void atualizarProjeteisJogador();
 
 void atualizarPosicaoDosInimigos();
 void atualizarProjeteisInimigos();
-
-void inimigoAtingido(Jogador* jogador, Inimigo* inimigo);
-void jogadorAtingido(Jogador* jogador);
+/*
+bool inimigoAtingido(Inimigo inimigo);
+bool jogadorAtingido();*/
 
 #endif // _FISICAS_H_

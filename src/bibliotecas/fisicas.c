@@ -8,7 +8,7 @@
 #include "listas.h"
 
 const int VALOR_MOVIMENTACAO_JOGADOR = 5;
-const int VALOR_MOVIMENTACAO_INIMIGO = 5;
+const int VALOR_MOVIMENTACAO_INIMIGO = 1;
 const int VALOR_MOVIMENTACAO_PROJETEIS = 8;
 
 void atualizarPosicaoJogador(Jogador* jogador, bool* teclaEspecialApertada, int margemDaTela){
@@ -29,10 +29,9 @@ void atualizarPosicaoJogador(Jogador* jogador, bool* teclaEspecialApertada, int 
             }
         }
     }
-    jogadorAtingido(jogador);
 }
 
-void atualizarProjeteisJogador(Jogador* jogador){
+void atualizarProjeteisJogador(){
     if(!projeteisDoJogador_listaVazia()){
         Projetil* projetilAtual = projeteisDoJogador_inicioDaLista();
         unsigned int indiceListaProjeteisJogador = 0;
@@ -45,37 +44,29 @@ void atualizarProjeteisJogador(Jogador* jogador){
             projetilAtual = projetilAtual->proximoProjetil;
             indiceListaProjeteisJogador++;
         }
-        
-        Inimigo* inimigos = inimigo_getLista();
-   		for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
-        	inimigoAtingido(jogador, &inimigos[i]);
-    	}   
     }
 }
 
 void atualizarPosicaoDosInimigos(){
-	Inimigo* inimigos = inimigo_getLista();	
-	bool andar = false;
-	if(rand() % 100 < 2){
-		andar = true;
-	}
-	for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
-		if(andar && inimigos[i].pontosDeVida > 0 && inimigos[i].posicao.x != INIMIGO_ELIMINADO){
-			inimigos[i].posicao.y -= VALOR_MOVIMENTACAO_INIMIGO;
-		}
-    	if(inimigos[i].pontosDeVida <= 0){
-			inimigos[i].posicao.x = INIMIGO_ELIMINADO;
-		}
-	}
+    Inimigo* inimigos = inimigo_getLista();
+    for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
+        if(inimigos[i].pontosDeVida > 0){
+            inimigos[i].posicao.y -= VALOR_MOVIMENTACAO_INIMIGO;
+            if(inimigos[i].posicao.y < 0){
+                inimigos[i].posicao.y = 400 - inimigos[i].dimensoes.altura;
+            }
+        }
+    }
 }
 
-void atualizarProjeteisInimigos(){
+void atualizarProjeteisInimigos(Jogador* jogador){
     Inimigo* inimigos = inimigo_getLista();
     ProjetilInimigo* projeteisInimigos = projeteisDosInimigos_getLista();
+
     // Possibilidade de atirar
     for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
         if(inimigos[i].pontosDeVida > 0 && projeteisInimigos[i].valido == false){
-            if(rand() % 1000 < 2){ // 2% de chance de atirar 
+            if(rand() % 100 < 2){ // 2% de chance de atirar 
                 projeteisInimigos[i].valido = true;
                 projeteisInimigos[i].dimensoes.largura = 4;
                 projeteisInimigos[i].dimensoes.altura = 10;
@@ -87,47 +78,47 @@ void atualizarProjeteisInimigos(){
     }
     // Atualizar posicao
     for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
-        if(projeteisInimigos[i].valido){
+        if(projeteisInimigos[i].valido == true){
             projeteisInimigos[i].posicao.y = projeteisInimigos[i].posicao.y - VALOR_MOVIMENTACAO_PROJETEIS;
-            if(projeteisInimigos[i].posicao.y < 0){
-            	projeteisInimigos[i].valido = false;
+            if(projeteisInimigos[i].posicao.y <= 0){
+                projeteisInimigos[i].valido = false;  
             }
         }
     }
 }
 
-void inimigoAtingido(Jogador* jogador, Inimigo* inimigo){
+bool inimigoAtingido(Inimigo inimigo){
     if(!projeteisDoJogador_listaVazia()){
         Projetil* projetilAtual = projeteisDoJogador_inicioDaLista();
+        unsigned int indiceListaProjeteisJogador = 0;
+
         while(projetilAtual != NULL){
-            if(projetilAtual->posicao.y < inimigo->posicao.y - inimigo->dimensoes.altura){} // Tiro de baixo
-            else if(projetilAtual->posicao.y - projetilAtual->dimensoes.altura > inimigo->posicao.y){} // Tiro de cima
-			else if(projetilAtual->posicao.x + projetilAtual->dimensoes.largura < inimigo->posicao.x){} // Tiro na esquerda
-			else if(projetilAtual->posicao.x > inimigo->posicao.x + inimigo->dimensoes.largura){} // Tiro na direita
-			else{ // Tiro atingiu alvo
-				projetilAtual->posicao.y = 401 +  projetilAtual->dimensoes.altura;
-				inimigo->pontosDeVida--;
-				jogador->pontosDeAtaque += 10;
-				printf("inimigo levou dano\n");
-			}
+            if(projetilAtual->posicao.y >= inimigo.posicao.y - inimigo.dimensoes.altura){
+                if(projetilAtual->posicao.x >= inimigo.posicao.x || projetilAtual->posicao.x + projetilAtual->dimensoes.largura >= inimigo.posicao.x){
+                    if(projetilAtual->posicao.x < inimigo.posicao.x + inimigo.dimensoes.largura){
+                        return true;
+                    }
+                }
+            }
             projetilAtual = projetilAtual->proximoProjetil;
+            indiceListaProjeteisJogador++;
         }
     }
+    return false;
 }
 
-void jogadorAtingido(Jogador* jogador){
+bool jogadorAtingido(Jogador jogador){
     ProjetilInimigo* projeteisInimigos = projeteisDosInimigos_getLista();
     for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
         if(projeteisInimigos[i].valido){
-            if(projeteisInimigos[i].posicao.y < jogador->posicao.y - jogador->dimensoes.altura){} // Tiro em baixo
-			else if(projeteisInimigos[i].posicao.y - projeteisInimigos[i].dimensoes.altura > jogador->posicao.y){} // Tiro em cima
-			else if(projeteisInimigos[i].posicao.x + projeteisInimigos[i].dimensoes.largura < jogador->posicao.x){} // Tiro na esquerda
-			else if(projeteisInimigos[i].posicao.x > jogador->posicao.x + jogador->dimensoes.largura){} // Tiro na direita
-			else{ // Tiro atingiu alvo
-				projeteisInimigos[i].valido = false;
-				jogador->pontosDeVida--;
-    			printf("jogador levou dano\n");
-			}
+            if(projeteisInimigos[i].posicao.y >= jogador.posicao.y - jogador.dimensoes.altura){
+                if(projeteisInimigos[i].posicao.x >= jogador.posicao.x || projeteisInimigos[i].posicao.x + projeteisInimigos[i].dimensoes.largura >= jogador.posicao.x){
+                    if(projeteisInimigos[i].posicao.x < jogador.posicao.x + jogador.dimensoes.largura){
+                        return true;
+                    }
+                }
+            }
         }
     }
+    return false;
 }

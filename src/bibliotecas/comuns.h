@@ -5,8 +5,6 @@
 
 #include <GL/freeglut.h>
 
-#define INIMIGO_ELIMINADO 400
-
 enum telas {inicio = 1, jogo, fimDeJogo};
 
 typedef struct{ // Topo superior esquerdo
