@@ -43,7 +43,7 @@ void inicializa(){
     inicializarlistas();
     
     // Definir inimigo
-
+    
 }
 
 void callback_desenhaCena(){
@@ -55,12 +55,29 @@ void callback_desenhaCena(){
         break;
         case(jogo):
             jogo_desenhaCena(jogador, projeteisDoJogador_inicioDaLista());
-        break;
+            if(jogador.pontosDeVida <= 0){ // Jogador morreu
+				telaAtual = fimDeJogo;
+			}
+            unsigned int inimigosEliminados = 0;
+			Inimigo* inimigos = inimigo_getLista();
+			for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
+				if(inimigos[i].posicao.x == INIMIGO_ELIMINADO){
+					inimigosEliminados++;
+				}
+				if(inimigos[i].posicao.y <= jogador.posicao.y){ // Inimigos chegaram no jogador
+					telaAtual = fimDeJogo;
+					break;
+				}
+			}
+			if(inimigosEliminados == QUANTIDADE_DE_INIMIGOS){ // Inimigos foram eliminados
+				jogo_inicializarInimigos();
+			}
+		break;
         case(fimDeJogo):
             fimDeJogo_desenhaCena();
         break;
     }
-    
+   
     glFlush();
 }
 
@@ -97,24 +114,37 @@ void callback_redimensiona(int largura, int altura){
 void callback_teclaAbaixada(unsigned char tecla, int x, int y){
     teclaComumApertada[tecla] = true;
 
-    if(telaAtual == inicio){
-        if(tecla == 'p' || tecla == 'P'){
-            telaAtual = jogo;
-            jogo_reiniciarJogo(&jogador);
-        }
-    }else if(telaAtual == jogo){
-        if(tecla == 'p' || tecla == 'P'){
-            jogoPausado = !jogoPausado;
-        }else if(tecla == ' '){
-            Projetil projetil;
-            projetil.dimensoes.altura = 10;
-            projetil.dimensoes.largura = 6;
-            projetil.posicao.x = jogador.posicao.x + jogador.dimensoes.largura / 2 - projetil.dimensoes.largura / 2;
-            projetil.posicao.y = jogador.posicao.y;
-            projetil.posicao.z = 4;
-
-            projeteisDoJogador_adicionar(projetil);
-        }
+    switch(telaAtual){
+        case(inicio):
+            if(tecla == 'p' || tecla == 'P'){
+                telaAtual = jogo;
+                jogo_reiniciarJogo(&jogador);
+            }
+        break;
+        case(jogo):
+            if(tecla == 'p' || tecla == 'P'){
+                jogoPausado = !jogoPausado;
+            }else if(tecla == ' '){
+                Projetil projetil;
+                projetil.dimensoes.altura = 10;
+                projetil.dimensoes.largura = 6;
+                projetil.posicao.x = jogador.posicao.x + jogador.dimensoes.largura / 2 - projetil.dimensoes.largura / 2;
+                projetil.posicao.y = jogador.posicao.y;
+                projetil.posicao.z = 4;
+                projeteisDoJogador_adicionar(projetil);
+            }else if(tecla == 'r' || tecla == 'R'){
+                if(jogoPausado){
+                    jogoPausado = false;
+                }
+                jogo_reiniciarJogo(&jogador);
+            }
+        break;
+        case(fimDeJogo):
+            if(tecla == 'r' || tecla == 'R'|| tecla == 'p' || tecla == 'P'){
+                telaAtual = jogo;
+                jogo_reiniciarJogo(&jogador);
+            }
+        break;
     }
 }
     
@@ -192,7 +222,7 @@ void callback_teclaEspecialAbaixada(int tecla, int x, int y){
 void callback_atualizaQuadros(int periodo){
     if(telaAtual == jogo && !jogoPausado){
         atualizarPosicaoJogador(&jogador, teclaEspecialApertada, MARGEM_DA_TELA);
-        atualizarProjeteisJogador();
+        atualizarProjeteisJogador(&jogador);
         atualizarPosicaoDosInimigos();
         atualizarProjeteisInimigos();
     }
