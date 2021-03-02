@@ -32,6 +32,7 @@ void atualizarPosicaoJogador(Jogador* jogador, bool* teclaEspecialApertada, int 
     jogadorAtingido(jogador);
 }
 
+
 void atualizarProjeteisJogador(Jogador* jogador){
     if(!projeteisDoJogador_listaVazia()){
         Projetil* projetilAtual = projeteisDoJogador_inicioDaLista();
@@ -56,6 +57,7 @@ void atualizarProjeteisJogador(Jogador* jogador){
     }
 }
 
+
 void atualizarPosicaoDosInimigos(){
 	Inimigo* inimigos = inimigo_getLista();	
 	bool andar = false;
@@ -69,6 +71,7 @@ void atualizarPosicaoDosInimigos(){
     	
 	}
 }
+
 
 void atualizarProjeteisInimigos(){
     Inimigo* inimigos = inimigo_getLista();
@@ -97,6 +100,7 @@ void atualizarProjeteisInimigos(){
     }
 }
 
+
 void inimigoAtingido(Jogador* jogador, Inimigo* inimigo){
     if(!projeteisDoJogador_listaVazia()){
         Projetil* projetilAtual = projeteisDoJogador_inicioDaLista();
@@ -115,6 +119,7 @@ void inimigoAtingido(Jogador* jogador, Inimigo* inimigo){
         }
     }
 }
+
 
 void jogadorAtingido(Jogador* jogador){
     ProjetilInimigo* projeteisInimigos = projeteisDosInimigos_getLista();

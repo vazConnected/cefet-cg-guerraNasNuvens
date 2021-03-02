@@ -87,6 +87,7 @@ void callback_desenhaCena(){
     glFlush();
 }
 
+
 void callback_redimensiona(int largura, int altura){
    /*
     * Descricao da tela:
@@ -116,6 +117,7 @@ void callback_redimensiona(int largura, int altura){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
+
 
 void callback_teclaAbaixada(unsigned char tecla, int x, int y){
     teclaComumApertada[tecla] = true;
@@ -159,9 +161,11 @@ void callback_teclaAbaixada(unsigned char tecla, int x, int y){
     }
 }
     
+
 void callback_teclaLevantada(unsigned char tecla, int x, int y){
     teclaComumApertada[tecla] = false;
 }
+
 
 void callback_teclaEspecialLevantada(int tecla, int x, int y){
     /*  Tecla               Hex     Dec  Posicao  Intervalos
@@ -197,6 +201,7 @@ void callback_teclaEspecialLevantada(int tecla, int x, int y){
     teclaEspecialApertada[tecla] = false;
 }
 
+
 void callback_teclaEspecialAbaixada(int tecla, int x, int y){
     /*  Tecla               Hex     Dec  Posicao  Intervalos
     *   GLUT_KEY_F1         0x0001  001  00       inicio 1
@@ -230,6 +235,7 @@ void callback_teclaEspecialAbaixada(int tecla, int x, int y){
     teclaEspecialApertada[tecla] = true;
 }
 
+
 void callback_atualizaQuadros(int periodo){
     if(telaAtual == jogo && !jogoPausado){
         atualizarPosicaoJogador(&jogador, teclaEspecialApertada, MARGEM_DA_TELA);
@@ -241,6 +247,7 @@ void callback_atualizaQuadros(int periodo){
     glutPostRedisplay();
     glutTimerFunc(periodo, callback_atualizaQuadros, periodo);
 }
+
 
 int main(int argc, char** argv){
     glutInit(&argc, argv);

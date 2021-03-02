@@ -13,7 +13,7 @@
 
 unsigned int tempojogador = 0, tempotela, contfundo=0;
 
-GLuint inicial, painel, final, vida, telajogo[4], nave[2];
+GLuint numeros[10];
 
 
 GLuint carregaTextura(const char* arquivo) {
@@ -29,13 +29,11 @@ GLuint carregaTextura(const char* arquivo) {
 
 void inicio_desenhaCena(){
 
+    GLuint inicial;
     glBindTexture(GL_TEXTURE_2D, inicial);
-  
     inicial = carregaTextura("textures/inicial.png");
-    
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    
     glEnable(GL_TEXTURE_2D);
     glColor3f(1, 1, 1);
     glBegin(GL_TRIANGLE_FAN);
@@ -45,14 +43,13 @@ void inicio_desenhaCena(){
         glTexCoord2f(0, 1); glVertex3f( 0,  400,  5); //up left
     glEnd();
     glDisable(GL_TEXTURE_2D);
-
 }
 
 
 void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
 
     // Desenha painel
-    
+    GLuint painel;
     glBindTexture(GL_TEXTURE_2D, painel);
     painel = carregaTextura("textures/painel.png");
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -67,9 +64,8 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
     glEnd();
     glDisable(GL_TEXTURE_2D);
     
-
-
     // Desenha vida
+    GLuint vida;
     glBindTexture(GL_TEXTURE_2D, vida);
     vida = carregaTextura("textures/vida.png");
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -86,8 +82,8 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
     }
     glDisable(GL_TEXTURE_2D);
 
-
-    // Desenha fundo animado    
+    // Desenha fundo animado  
+    GLuint telajogo[5];  
     telajogo[0] = carregaTextura("textures/jogo.png");
     telajogo[1] = carregaTextura("textures/jogo2.png");
     telajogo[2] = carregaTextura("textures/jogo3.png");
@@ -114,9 +110,8 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
         glEnd();
     glDisable(GL_TEXTURE_2D);
     
-
     // Desenha jogador
-    GLuint naveexplosao;
+    GLuint nave[2], naveexplosao;
     nave[0] = carregaTextura("textures/nave.png");
     nave[1] = carregaTextura("textures/navefrontal.png");
     naveexplosao = carregaTextura("textures/naveexplosao.png");
@@ -144,7 +139,6 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
     glEnd();
     glDisable(GL_TEXTURE_2D);   
     
-
     // Desenha projeteis do jogador
     glColor3f(0.55, 0.0, 0.0);
     Projetil* projetilAtual = listaProjeteisDoJogador;
@@ -157,7 +151,6 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
         glEnd();
         projetilAtual = projetilAtual->proximoProjetil;
     }
-
 
     // Desenha Inimigos
     GLuint inimigosTex[4], inimigosDanoTex[3];
@@ -202,7 +195,6 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
         
     }
 
-
     // Desenha explosão dos iniigos
     GLuint inimigosExplosaoTex[4];
     inimigosExplosaoTex[0] = carregaTextura("textures/explosaoverde.png");
@@ -240,7 +232,6 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
         
     }
    
-
     // Desenha projeteis dos inimigos
     ProjetilInimigo* projeteisInimigos = projeteisDosInimigos_getLista();
     for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
@@ -256,8 +247,7 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
     }
 
 
-    //Desenha pontuacao
-    GLuint numeros[10];
+    // Desenha pontuacao
     numeros[0] = carregaTextura("textures/0.png");
     numeros[1] = carregaTextura("textures/1.png");
     numeros[2] = carregaTextura("textures/2.png");
@@ -268,23 +258,24 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
     numeros[7] = carregaTextura("textures/7.png");
     numeros[8] = carregaTextura("textures/8.png");
     numeros[9] = carregaTextura("textures/9.png");
-    
     if(jogador->pontosDeAtaque>99999) jogador->pontosDeAtaque = 99999;
-    for(int i = jogador->pontosDeAtaque, x=0; i>=1; i/=10, x+=11 ){
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, numeros[i%10]);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glColor3f(1, 1, 1);
-        glBegin(GL_TRIANGLE_FAN);
-            glTexCoord2f(0, 0); glVertex3f(289-x, 5,  6); //bottom left
-            glTexCoord2f(1, 0); glVertex3f( 299-x, 5,  6); //bottom right
-            glTexCoord2f(1, 1); glVertex3f( 299-x,  19,  6); //up right
-            glTexCoord2f(0, 1); glVertex3f( 289-x,  19,  6); //up left
-        glEnd();
-        glDisable(GL_TEXTURE_2D);
+    if(jogador->pontosDeAtaque>0){
+        for(int i = jogador->pontosDeAtaque, x=0; i>=1; i/=10, x+=11 ){
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, numeros[i%10]);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glColor3f(1, 1, 1);
+            glBegin(GL_TRIANGLE_FAN);
+                glTexCoord2f(0, 0); glVertex3f(289-x, 5,  6); //bottom left
+                glTexCoord2f(1, 0); glVertex3f( 299-x, 5,  6); //bottom right
+                glTexCoord2f(1, 1); glVertex3f( 299-x,  19,  6); //up right
+                glTexCoord2f(0, 1); glVertex3f( 289-x,  19,  6); //up left
+            glEnd();
+            glDisable(GL_TEXTURE_2D);
+        }
     }
-    if(jogador->pontosDeAtaque == 0){
+    if(jogador->pontosDeAtaque <= 0){
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, numeros[0]);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -298,19 +289,17 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
         glEnd();
         glDisable(GL_TEXTURE_2D);
     }
-    
 }
 
 
 void fimDeJogo_desenhaCena(Jogador* jogador){
 
+    // Desenha tela de fim de jogo
+    GLuint final;
     glBindTexture(GL_TEXTURE_2D, final);
-  
     final = carregaTextura("textures/final.png");
-    
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    
     glEnable(GL_TEXTURE_2D);
     glColor3f(1, 1, 1);
     glBegin(GL_TRIANGLE_FAN);
@@ -322,7 +311,6 @@ void fimDeJogo_desenhaCena(Jogador* jogador){
     glDisable(GL_TEXTURE_2D);
 
     // Desenha pontuacao
-    GLuint numeros[10];
     numeros[0] = carregaTextura("textures/0.png");
     numeros[1] = carregaTextura("textures/1.png");
     numeros[2] = carregaTextura("textures/2.png");
@@ -333,39 +321,40 @@ void fimDeJogo_desenhaCena(Jogador* jogador){
     numeros[7] = carregaTextura("textures/7.png");
     numeros[8] = carregaTextura("textures/8.png");
     numeros[9] = carregaTextura("textures/9.png");
-    int posx = 160-300/jogador->pontosDeAtaque;
-    if(jogador->pontosDeAtaque>99999) jogador->pontosDeAtaque = 99999;
-    for(int i = jogador->pontosDeAtaque, x=0; i>=1; i/=10, x+=21 ){
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, numeros[i%10]);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glColor3f(1, 1, 1);
-        glBegin(GL_TRIANGLE_FAN);
-            glTexCoord2f(0, 0); glVertex3f(posx-x, 188,  6); //bottom left
-            glTexCoord2f(1, 0); glVertex3f( posx + 20 - x, 188,  6); //bottom right
-            glTexCoord2f(1, 1); glVertex3f( posx + 20 -x,  212,  6); //up right
-            glTexCoord2f(0, 1); glVertex3f( posx - x,  212,  6); //up left
-        glEnd();
-        glDisable(GL_TEXTURE_2D);
+    if(jogador->pontosDeAtaque>0){
+        int posx = 160-300/jogador->pontosDeAtaque;
+        if(jogador->pontosDeAtaque>99999) jogador->pontosDeAtaque = 99999;
+        for(int i = jogador->pontosDeAtaque, x=0; i>=1; i/=10, x+=21 ){
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, numeros[i%10]);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            glColor3f(1, 1, 1);
+            glBegin(GL_TRIANGLE_FAN);
+                glTexCoord2f(0, 0); glVertex3f(posx-x, 188,  6); //bottom left
+                glTexCoord2f(1, 0); glVertex3f( posx + 20 - x, 188,  6); //bottom right
+                glTexCoord2f(1, 1); glVertex3f( posx + 20 -x,  212,  6); //up right
+                glTexCoord2f(0, 1); glVertex3f( posx - x,  212,  6); //up left
+            glEnd();
+            glDisable(GL_TEXTURE_2D);
+        }
     }
-    if(jogador->pontosDeAtaque == 0){
+    else if(jogador->pontosDeAtaque <= 0){
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, numeros[0]);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glColor3f(1, 1, 1);
         glBegin(GL_TRIANGLE_FAN);
-            glTexCoord2f(0, 0); glVertex3f(289, 5,  6); //bottom left
-            glTexCoord2f(1, 0); glVertex3f( 299, 5,  6); //bottom right
-            glTexCoord2f(1, 1); glVertex3f( 299,  19,  6); //up right
-            glTexCoord2f(0, 1); glVertex3f( 289,  19,  6); //up left
+            glTexCoord2f(0, 0); glVertex3f(140, 188,  6); //bottom left
+            glTexCoord2f(1, 0); glVertex3f( 160, 188,  6); //bottom right
+            glTexCoord2f(1, 1); glVertex3f( 160,  212,  6); //up right
+            glTexCoord2f(0, 1); glVertex3f( 140,  212,  6); //up left
         glEnd();
         glDisable(GL_TEXTURE_2D);
     }
-    
-
 }
+
 
 void jogo_inicializarInimigos(){
     unsigned int x = 120; // Valor x do inimigo mais no topo
@@ -391,6 +380,7 @@ void jogo_inicializarInimigos(){
 
 }
 
+
 void jogo_limparProjeteisInimigos(){
     ProjetilInimigo* listaProjeteisInimigos = projeteisDosInimigos_getLista();
     for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
@@ -398,11 +388,12 @@ void jogo_limparProjeteisInimigos(){
     }
 }
 
+
 void jogo_reiniciarJogo(Jogador* jogador){
     jogo_inicializarInimigos();
     jogo_limparProjeteisInimigos();
 
-    // Iniciando jogador (valores nao definitivos)
+    // Iniciando jogador
     jogador->dimensoes.largura = 25;
     jogador->dimensoes.altura = 30;
     jogador->posicao.x = 150 - jogador->dimensoes.largura / 2;
@@ -411,5 +402,4 @@ void jogo_reiniciarJogo(Jogador* jogador){
     jogador->pontosDeVida = 5;
     jogador->pontosDeAtaque = 0;
     projeteisDoJogador_esvaziarLista();
-    
 }
