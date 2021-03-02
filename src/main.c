@@ -79,7 +79,7 @@ void callback_desenhaCena(){
 			}
 		break;
         case(fimDeJogo):
-            for(long int i=0; i<99999999; i++);// Tempo antes de sair da tela de
+            for(long int i=0; i<99999999; i++);// Tempo de explosao do jogador
             fimDeJogo_desenhaCena(&jogador);
         break;
     }

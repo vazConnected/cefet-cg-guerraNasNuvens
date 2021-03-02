@@ -268,6 +268,7 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
     numeros[7] = carregaTextura("textures/7.png");
     numeros[8] = carregaTextura("textures/8.png");
     numeros[9] = carregaTextura("textures/9.png");
+    
     if(jogador->pontosDeAtaque>99999) jogador->pontosDeAtaque = 99999;
     for(int i = jogador->pontosDeAtaque, x=0; i>=1; i/=10, x+=11 ){
         glEnable(GL_TEXTURE_2D);
@@ -280,6 +281,20 @@ void jogo_desenhaCena(Jogador* jogador, Projetil* listaProjeteisDoJogador){
             glTexCoord2f(1, 0); glVertex3f( 299-x, 5,  6); //bottom right
             glTexCoord2f(1, 1); glVertex3f( 299-x,  19,  6); //up right
             glTexCoord2f(0, 1); glVertex3f( 289-x,  19,  6); //up left
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+    }
+    if(jogador->pontosDeAtaque == 0){
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, numeros[0]);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glColor3f(1, 1, 1);
+        glBegin(GL_TRIANGLE_FAN);
+            glTexCoord2f(0, 0); glVertex3f(289, 5,  6); //bottom left
+            glTexCoord2f(1, 0); glVertex3f( 299, 5,  6); //bottom right
+            glTexCoord2f(1, 1); glVertex3f( 299,  19,  6); //up right
+            glTexCoord2f(0, 1); glVertex3f( 289,  19,  6); //up left
         glEnd();
         glDisable(GL_TEXTURE_2D);
     }
@@ -331,6 +346,20 @@ void fimDeJogo_desenhaCena(Jogador* jogador){
             glTexCoord2f(1, 0); glVertex3f( posx + 20 - x, 188,  6); //bottom right
             glTexCoord2f(1, 1); glVertex3f( posx + 20 -x,  212,  6); //up right
             glTexCoord2f(0, 1); glVertex3f( posx - x,  212,  6); //up left
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+    }
+    if(jogador->pontosDeAtaque == 0){
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, numeros[0]);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glColor3f(1, 1, 1);
+        glBegin(GL_TRIANGLE_FAN);
+            glTexCoord2f(0, 0); glVertex3f(289, 5,  6); //bottom left
+            glTexCoord2f(1, 0); glVertex3f( 299, 5,  6); //bottom right
+            glTexCoord2f(1, 1); glVertex3f( 299,  19,  6); //up right
+            glTexCoord2f(0, 1); glVertex3f( 289,  19,  6); //up left
         glEnd();
         glDisable(GL_TEXTURE_2D);
     }
