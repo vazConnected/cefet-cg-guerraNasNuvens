@@ -12,28 +12,28 @@ clear
 echo -e "\nA compilacao da Guerra nas Nuvens foi iniciada!"
 
 echo -e "\n\tCompilando src/bibliotecas/telas.c"
-gcc -c -o src/bibliotecas/telas.o src/bibliotecas/telas.c -lGL -lGLEW -lglut
+gcc -c -o src/bibliotecas/telas.o src/bibliotecas/telas.c -lGL -lGLEW -lglut -lSOIL
 if [ $? -ne 0 ]; then
     excluirArquivosDesnecessarios
     exit 1
 fi
 
 echo -e "\tCompilando src/bibliotecas/listas.c"
-gcc -c -o src/bibliotecas/listas.o src/bibliotecas/listas.c -lGL -lGLEW -lglut
+gcc -c -o src/bibliotecas/listas.o src/bibliotecas/listas.c -lGL -lGLEW -lglut -lSOIL
 if [ $? -ne 0 ]; then
     excluirArquivosDesnecessarios
     exit 1
 fi
 
 echo -e "\tCompilando src/bibliotecas/fisicas.c"
-gcc -c -o src/bibliotecas/fisicas.o src/bibliotecas/fisicas.c -lGL -lGLEW -lglut
+gcc -c -o src/bibliotecas/fisicas.o src/bibliotecas/fisicas.c -lGL -lGLEW -lglut -lSOIL
 if [ $? -ne 0 ]; then
     excluirArquivosDesnecessarios
     exit 1
 fi
 
 echo -e "\n\tCompilando src/main.c"
-gcc -o src/cg-galaxian.out src/main.c src/bibliotecas/telas.o src/bibliotecas/fisicas.o src/bibliotecas/listas.o -lGL -lglut -lGLEW
+gcc -o src/cg-galaxian.out src/main.c src/bibliotecas/telas.o src/bibliotecas/fisicas.o src/bibliotecas/listas.o -lGL -lglut -lGLEW -lSOIL
 if [ $? -ne 0 ]; then
     excluirArquivosDesnecessarios
     exit 1

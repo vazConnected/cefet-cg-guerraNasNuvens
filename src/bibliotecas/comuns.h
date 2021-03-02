@@ -41,7 +41,7 @@ typedef struct projetilInimigo{
 } ProjetilInimigo;
 
 typedef struct inimigo{
-    unsigned int pontosDeVida;
+    unsigned int pontosDeVida, tempoInimigo;
     float velocidade;
     Posicao posicao;
     Dimensoes dimensoes;

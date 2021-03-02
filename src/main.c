@@ -31,30 +31,34 @@ bool jogoPausado = false;
 
 void inicializa(){
     srand(time(NULL));
-    glClearColor(0.0, 0.0, 0.0, 1);
 
-    glEnable(GL_DEPTH_TEST); // Habilita profundidade (z)
-    //glEnable(GL_TEXTURE_2D); // Habilita texturas
-    glEnable(GL_BLEND ); // Habilita transparencia
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-    // Mapear spritesheet
-    // Carregar texturas
+    glEnable(GL_BLEND ); 
+    glEnable(GL_DEPTH_TEST); 
+    glEnable(GL_TEXTURE_2D); 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glAlphaFunc(GL_GREATER, 0.5);
+    glEnable(GL_ALPHA_TEST);
 
     inicializarlistas();
     
-    // Definir inimigo
     
 }
 
 void callback_desenhaCena(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    
     switch(telaAtual){
         case(inicio):
             inicio_desenhaCena();
         break;
         case(jogo):
-            jogo_desenhaCena(jogador, projeteisDoJogador_inicioDaLista());
+        
+            jogo_desenhaCena(&jogador, projeteisDoJogador_inicioDaLista());
+            
             if(jogador.pontosDeVida <= 0){ // Jogador morreu
 				telaAtual = fimDeJogo;
 			}
@@ -70,11 +74,13 @@ void callback_desenhaCena(){
 				}
 			}
 			if(inimigosEliminados == QUANTIDADE_DE_INIMIGOS){ // Inimigos foram eliminados
+                projeteisDoJogador_esvaziarLista();
 				jogo_inicializarInimigos();
 			}
 		break;
         case(fimDeJogo):
-            fimDeJogo_desenhaCena();
+            for(long int i=0; i<99999999; i++);// Tempo antes de sair da tela de
+            fimDeJogo_desenhaCena(&jogador);
         break;
     }
    
@@ -114,37 +120,42 @@ void callback_redimensiona(int largura, int altura){
 void callback_teclaAbaixada(unsigned char tecla, int x, int y){
     teclaComumApertada[tecla] = true;
 
-    switch(telaAtual){
-        case(inicio):
-            if(tecla == 'p' || tecla == 'P'){
-                telaAtual = jogo;
-                jogo_reiniciarJogo(&jogador);
-            }
-        break;
-        case(jogo):
-            if(tecla == 'p' || tecla == 'P'){
-                jogoPausado = !jogoPausado;
-            }else if(tecla == ' '){
-                Projetil projetil;
-                projetil.dimensoes.altura = 10;
-                projetil.dimensoes.largura = 6;
-                projetil.posicao.x = jogador.posicao.x + jogador.dimensoes.largura / 2 - projetil.dimensoes.largura / 2;
-                projetil.posicao.y = jogador.posicao.y;
-                projetil.posicao.z = 4;
-                projeteisDoJogador_adicionar(projetil);
-            }else if(tecla == 'r' || tecla == 'R'){
-                if(jogoPausado){
-                    jogoPausado = false;
+    if(tecla == 27){
+        exit(0);
+    }
+    else{
+        switch(telaAtual){
+            case(inicio):
+                if(tecla == 'p' || tecla == 'P'){
+                    telaAtual = jogo;
+                    jogo_reiniciarJogo(&jogador);
                 }
-                jogo_reiniciarJogo(&jogador);
-            }
-        break;
-        case(fimDeJogo):
-            if(tecla == 'r' || tecla == 'R'|| tecla == 'p' || tecla == 'P'){
-                telaAtual = jogo;
-                jogo_reiniciarJogo(&jogador);
-            }
-        break;
+            break;
+            case(jogo):
+                if(tecla == 'p' || tecla == 'P'){
+                    jogoPausado = !jogoPausado;
+                }else if(tecla == ' '){
+                    Projetil projetil;
+                    projetil.dimensoes.altura = 8;
+                    projetil.dimensoes.largura = 4;
+                    projetil.posicao.x = jogador.posicao.x + jogador.dimensoes.largura / 2 - projetil.dimensoes.largura / 2;
+                    projetil.posicao.y = jogador.posicao.y;
+                    projetil.posicao.z = 4;
+                    projeteisDoJogador_adicionar(projetil);
+                }else if(tecla == 'r' || tecla == 'R'){
+                    if(jogoPausado){
+                        jogoPausado = false;
+                    }
+                    jogo_reiniciarJogo(&jogador);
+                }
+            break;
+            case(fimDeJogo):
+                if(tecla == 'r' || tecla == 'R'|| tecla == 'p' || tecla == 'P'){
+                    telaAtual = jogo;
+                    jogo_reiniciarJogo(&jogador);
+                }
+            break;
+        }
     }
 }
     

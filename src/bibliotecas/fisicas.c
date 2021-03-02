@@ -40,7 +40,7 @@ void atualizarProjeteisJogador(Jogador* jogador){
         while(projetilAtual != NULL){
             projetilAtual->posicao.y += VALOR_MOVIMENTACAO_PROJETEIS;
             if( projetilAtual->posicao.y - projetilAtual->dimensoes.altura > 400 ){
-                projeteisDoJogador_remover(indiceListaProjeteisJogador);
+                //projeteisDoJogador_remover(indiceListaProjeteisJogador);
             }
             projetilAtual = projetilAtual->proximoProjetil;
             indiceListaProjeteisJogador++;
@@ -48,7 +48,10 @@ void atualizarProjeteisJogador(Jogador* jogador){
         
         Inimigo* inimigos = inimigo_getLista();
    		for(int i = 0; i < QUANTIDADE_DE_INIMIGOS; i++){
-        	inimigoAtingido(jogador, &inimigos[i]);
+        	if(inimigos[i].posicao.z!=7){
+                inimigoAtingido(jogador, &inimigos[i]);
+                if(inimigos[i].pontosDeVida <= 0) inimigos[i].posicao.z = 7;
+            }
     	}   
     }
 }
@@ -63,9 +66,7 @@ void atualizarPosicaoDosInimigos(){
 		if(andar && inimigos[i].pontosDeVida > 0 && inimigos[i].posicao.x != INIMIGO_ELIMINADO){
 			inimigos[i].posicao.y -= VALOR_MOVIMENTACAO_INIMIGO;
 		}
-    	if(inimigos[i].pontosDeVida <= 0){
-			inimigos[i].posicao.x = INIMIGO_ELIMINADO;
-		}
+    	
 	}
 }
 
@@ -77,8 +78,8 @@ void atualizarProjeteisInimigos(){
         if(inimigos[i].pontosDeVida > 0 && projeteisInimigos[i].valido == false){
             if(rand() % 1000 < 2){ // 2% de chance de atirar 
                 projeteisInimigos[i].valido = true;
-                projeteisInimigos[i].dimensoes.largura = 4;
-                projeteisInimigos[i].dimensoes.altura = 10;
+                projeteisInimigos[i].dimensoes.largura = 5;
+                projeteisInimigos[i].dimensoes.altura = 5;
                 projeteisInimigos[i].posicao.x = inimigos[i].posicao.x + inimigos[i].dimensoes.largura / 2  - projeteisInimigos[i].dimensoes.largura / 2;
                 projeteisInimigos[i].posicao.y = inimigos[i].posicao.y - inimigos[i].dimensoes.altura;
                 projeteisInimigos[i].posicao.z = 5;
@@ -107,8 +108,8 @@ void inimigoAtingido(Jogador* jogador, Inimigo* inimigo){
 			else{ // Tiro atingiu alvo
 				projetilAtual->posicao.y = 401 +  projetilAtual->dimensoes.altura;
 				inimigo->pontosDeVida--;
+                inimigo->posicao.z = 6;
 				jogador->pontosDeAtaque += 10;
-				printf("Inimigo atingido\n");
 			}
             projetilAtual = projetilAtual->proximoProjetil;
         }
@@ -126,7 +127,7 @@ void jogadorAtingido(Jogador* jogador){
 			else{ // Tiro atingiu alvo
 				projeteisInimigos[i].valido = false;
 				jogador->pontosDeVida--;
-    			printf("  Jogador atingido\n");
+                jogador->posicao.z = 7;
 			}
         }
     }
