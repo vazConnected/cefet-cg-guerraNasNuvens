@@ -10,6 +10,14 @@ Para compilar e executar o projeto é necessário instalar os seguintes recursos
 
 Após instalar os recursos, basta executar o arquivo `cg-galaxian.sh`, localizado na raiz do repositório. Para isso, é necessário permitir a execução do stript executando o comando `chmod +x cg-galaxian.sh` no terminal.
 
+## Funcionalidades Extras Implementadas
+- Manter razão de aspecto;
+- Fase infinita;
+- Pontos de vida;
+- Pontuação por progresso;
+- Sistema de telas;
+- Variedade de inimigos.
+
 ## Créditos
 - Devs: [Luísa Oliveira](https://github.com/luisaoliveira), [Pedro Vaz](https://github.com/vazConnected) e [Stéphanie Fonseca](https://github.com/steponnie);
 - Prof.: [Glender Brás](https://github.com/glenderbras).
