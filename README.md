@@ -2,11 +2,9 @@
 O Guerra nas Nuvens é um projeto desenvolvido como parte da disciplina Computação Gráfica, do [Cefet-MG](https://cefetmg.br), inspirado no jogo Galaxian (1979).
 
 ## Capturas de tela
-
 | Tela Inicial | Jogo | Fim de Jogo |
 |:-------------------------------:|:----------------------:|:----------------------------:|
 |![intro-do-jogo](docs/intro.jpg) | ![jogo](docs/jogo.jpg) | ![fim-do-jogo](docs/fim.jpg) |
-
 
 
 ## Preparando o Ambiente de Execução
@@ -24,7 +22,8 @@ Após instalar os recursos, basta executar o arquivo `cg-galaxian.sh`, localizad
 - Pontos de vida;
 - Pontuação por progresso;
 - Sistema de telas;
-- Animação de fundo
+- Animação de fundo;
+- Animações para os inimigos e o jogador;
 - Variedade de inimigos.
 
 ## Créditos
