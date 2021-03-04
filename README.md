@@ -3,8 +3,8 @@ O Guerra nas Nuvens √© um projeto desenvolvido como parte da disciplina Computa√
 
 ## Capturas de tela
 
-|                                 |                       |                              |
-|---------------------------------|:----------------------|:----------------------------:|
+| Tela Inicial | Jogo | Fim de Jogo |
+|:-------------------------------:|:----------------------:|:----------------------------:|
 |![intro-do-jogo](docs/intro.jpg) | ![jogo](docs/jogo.jpg) | ![fim-do-jogo](docs/fim.jpg) |
 
 
